@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCwy_ygawiU2q-2QXIGT9afkiUG7GxEDJI</string>
+	<string>AIzaSyDSADGseP9OR8Atxq7iBsF84wIt36WuAX8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>690926473021</string>
+	<string>32723555873</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.cengizhantomak.Chat-Firebase-SwiftUI</string>
 	<key>PROJECT_ID</key>
-	<string>chat-firebase-swiftui-d671d</string>
+	<string>chat-swiftui-1a298</string>
 	<key>STORAGE_BUCKET</key>
-	<string>chat-firebase-swiftui-d671d.appspot.com</string>
+	<string>chat-swiftui-1a298.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:690926473021:ios:7d0684087d916e38c77f54</string>
+	<string>1:32723555873:ios:1fc6c8d2bca06a67087560</string>
 </dict>
 </plist>
