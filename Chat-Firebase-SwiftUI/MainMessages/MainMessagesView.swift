@@ -10,10 +10,14 @@ import SwiftUI
 struct MainMessagesView: View {
     @State var shouldShowLogOutOptions = false
     
+    @ObservedObject private var vm = MainMessagesViewModel()
+    
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 0) {
+//                Text("User: \(vm.chatUser?.uid ?? "")")
                 customNavBar
+                Divider()
                 messagesView
             }
             .overlay(newMessageButton, alignment: .bottom)
@@ -23,11 +27,25 @@ struct MainMessagesView: View {
     
     private var customNavBar: some View {
         HStack(spacing: 16) {
-            Image(systemName: "person.fill")
-                .font(.system(size: 34, weight: .heavy))
+            AsyncImage(url: URL(string: vm.chatUser?.profileImageUrl ?? "")) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 50, height: 50)
+                    .clipped()
+                    .cornerRadius(50)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 44)
+                            .stroke(.primary, lineWidth: 1)
+                    )
+                    .shadow(radius: 5)
+            } placeholder: {
+                ProgressView()
+            }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("USERNAME")
+                let email = vm.chatUser?.email.components(separatedBy: "@").first ?? ""
+                Text(email)
                     .font(.system(size: 24, weight: .bold))
                 
                 HStack {
@@ -93,6 +111,7 @@ struct MainMessagesView: View {
                 .padding(.horizontal)
             }
             .padding(.bottom, 50)
+            .padding(.top, 16)
         }
     }
     
@@ -118,7 +137,5 @@ struct MainMessagesView: View {
 
 #Preview {
     MainMessagesView()
-        .preferredColorScheme(.dark)
-    
-//    MainMessagesView()
+//        .preferredColorScheme(.dark)
 }
