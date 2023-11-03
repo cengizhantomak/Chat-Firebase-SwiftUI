@@ -31,17 +31,17 @@ struct MainMessagesView: View {
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 50, height: 50)
-                    .clipped()
-                    .cornerRadius(50)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 44)
-                            .stroke(.primary, lineWidth: 1)
-                    )
-                    .shadow(radius: 5)
             } placeholder: {
                 ProgressView()
             }
+            .frame(width: 50, height: 50)
+            .clipped()
+            .cornerRadius(50)
+            .shadow(radius: 5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 44)
+                    .stroke(.primary, lineWidth: 1)
+            )
             
             VStack(alignment: .leading, spacing: 4) {
                 let email = vm.chatUser?.email.components(separatedBy: "@").first ?? ""
@@ -73,9 +73,16 @@ struct MainMessagesView: View {
             .init(title: Text("Settings"), message: Text("What do you want to do?"), buttons: [
                 .destructive(Text("Sign Out"), action: {
                     print("handle sign out")
+                    vm.handleSignOut()
                 }),
                 .cancel()
             ])
+        }
+        .fullScreenCover(isPresented: $vm.isUserCurrentlyLoggedOut, onDismiss: nil) {
+            LoginView(didCompleteLoginProcess: {
+                self.vm.isUserCurrentlyLoggedOut = false
+                self.vm.fetchCurrentUser()
+            })
         }
     }
     
