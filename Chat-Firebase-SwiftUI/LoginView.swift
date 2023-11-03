@@ -6,34 +6,13 @@
 //
 
 import SwiftUI
-import Firebase
-import FirebaseStorage
-
-class FirebaseManager: NSObject {
-    
-    let auth: Auth
-    let storage: Storage
-    let firestore: Firestore
-    
-    static let shared = FirebaseManager()
-    
-    override init() {
-        FirebaseApp.configure()
-        
-        self.auth = Auth.auth()
-        self.storage = Storage.storage()
-        self.firestore = Firestore.firestore()
-        
-        super.init()
-    }
-}
 
 struct LoginView: View {
-    @State var isLoginMode = false
-    @State var email = ""
-    @State var password = ""
-    
-    @State var shouldShowImagePicker = false
+    let didCompleteLoginProcess: () -> ()
+    @State private var isLoginMode = false
+    @State private var email = ""
+    @State private var password = ""
+    @State private var shouldShowImagePicker = false
     
     var body: some View {
         NavigationStack {
@@ -64,10 +43,13 @@ struct LoginView: View {
                                     Image(systemName: "person.fill")
                                         .font(.system(size: 64))
                                         .padding()
-                                        .foregroundStyle(Color(.label))
+                                        .foregroundStyle(.primary)
                                 }
                             }
-                            .overlay(RoundedRectangle(cornerRadius: 64).stroke(Color.black, lineWidth: 3))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 64)
+                                    .stroke(.black, lineWidth: 3)
+                            )
                         }
                     }
                     
@@ -132,12 +114,19 @@ struct LoginView: View {
             print("Successfully logged in as user: \(result?.user.uid ?? "")")
             
             self.loginStatusMessage = "Successfully logged in as user: \(result?.user.uid ?? "")"
+            
+            self.didCompleteLoginProcess()
         }
     }
     
     @State var loginStatusMessage = ""
     
     private func createNewAccount() {
+        if self.image == nil {
+            self.loginStatusMessage = "You must select an avatar image"
+            return
+        }
+        
         FirebaseManager.shared.auth.createUser(withEmail: email, password: password) { result, err in
             if let err = err {
                 print("Failed to create user:", err)
@@ -191,10 +180,14 @@ struct LoginView: View {
                 }
                 
                 print("Success")
+                
+                self.didCompleteLoginProcess()
             }
     }
 }
 
 #Preview {
-    LoginView()
+    LoginView(didCompleteLoginProcess: {
+        
+    })
 }
